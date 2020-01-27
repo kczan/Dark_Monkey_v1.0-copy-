@@ -1,6 +1,7 @@
 from helpers import *
 import engine
 import ui
+import data_manager
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -32,18 +33,23 @@ class Player:
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.icon = icon
+        self.money = 0
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
         self.pos_y += y_change
 
+    def add_money(self, amount):
+        self.money += amount
+
 
 def main():
 
     player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON)
-    
+
     is_running = True
-    
+    board = data_manager.create_map_from_file('map_one')
+
     while is_running:
         key = key_pressed()
         if key == 'q':
@@ -51,7 +57,7 @@ def main():
         if key == 'z':
             clear_screen()
         else:
-            board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+            # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
             board = engine.put_player_on_board(board, player, key)
             ui.display_board(board)
 

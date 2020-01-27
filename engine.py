@@ -44,6 +44,7 @@ def put_player_on_board(board, player, key):
 
     if board[player.pos_y][player.pos_x] != '#':
         board[player.pos_y][player.pos_x] = player.icon
+        board[y_before_movement][x_before_movement] = '.'
     else:
         player.pos_x = x_before_movement
         player.pos_y = y_before_movement
