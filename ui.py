@@ -6,4 +6,21 @@ def display_board(board):
     Returns:
     Nothing 
     '''
+    import os
+    os.system('clear')
+    for row in board:
+        print(' '.join(row))
     pass
+
+
+def get_input(input_prompt):
+    '''
+
+    Args:
+        input_prompt: A question for the user.
+
+    Returns:
+        input_string: A string that contains user's response.
+    '''
+    input_string = input(input_prompt)
+    return input_string

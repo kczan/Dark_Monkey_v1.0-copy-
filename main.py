@@ -25,10 +25,23 @@ def create_player():
     return player
 
 
+class Player:
+
+    def __init__(self, name, pos_x, pos_y, icon):
+        self.name = name
+        self.pos_x = pos_x
+        self.pos_y = pos_y
+        self.icon = icon
+
+    def change_position(self, x_change, y_change):
+        self.pos_x += x_change
+        self.pos_y += y_change
+
+
 def main():
 
-    player = create_player()
-
+    player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON)
+    
     is_running = True
     
     while is_running:
@@ -39,7 +52,7 @@ def main():
             clear_screen()
         else:
             board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-            board = engine.put_player_on_board(board, player)
+            board = engine.put_player_on_board(board, player, key)
             ui.display_board(board)
 
 
