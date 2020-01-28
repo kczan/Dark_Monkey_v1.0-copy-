@@ -8,8 +8,25 @@ def display_board(board):
     '''
     import os
     os.system('clear')
+    os.system('cls')
     for row in board:
         print(' '.join(row))
+    pass
+
+
+def display_intro_screen(board):
+    '''
+    Displays complete intro screen board on the screen without spaces
+
+
+    Returns:
+    Nothing 
+    '''
+    import os
+    os.system('clear')
+    os.system('cls')
+    for row in board:
+        print(''.join(row), end ="")
     pass
 
 
