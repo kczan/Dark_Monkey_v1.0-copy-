@@ -14,10 +14,10 @@ BOARD_HEIGHT = 30
 def intro():
     import time
     board = data_manager.create_map_from_file('screen_title.txt')
-    ui.display_board(board)
+    ui.display_intro_screen(board)
     time.sleep(3)
     board = data_manager.create_map_from_file('screen_monkey.txt')
-    ui.display_board(board)
+    ui.display_intro_screen(board)
     while True:
         key = key_pressed()
         if key == ' ':
