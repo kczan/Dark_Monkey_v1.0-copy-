@@ -52,6 +52,9 @@ class Player:
         self.money = 0
         self.items = 0
         self.wand = 0
+        self.wand_printed = False
+        self.potion = 0
+        self.potion_printed = False
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -62,6 +65,10 @@ class Player:
 
     def obtained_wand(self):
         self.wand = 1
+        self.items += 1
+
+    def obtained_magic_potion(self):
+        self.potion = 1
         self.items += 1
 
     def __str__(self):

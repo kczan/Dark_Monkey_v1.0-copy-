@@ -57,3 +57,6 @@ def check_field(symbol, player):
         pass
     elif symbol == 'î':
         player.obtained_wand()
+    elif symbol == 'Ô':
+        player.obtained_magic_potion()
+
