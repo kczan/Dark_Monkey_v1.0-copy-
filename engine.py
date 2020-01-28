@@ -1,3 +1,4 @@
+
 def create_board(width, height):
 
     map_list = []
@@ -20,16 +21,7 @@ def create_board(width, height):
     
 
 def put_player_on_board(board, player, key):
-    '''
-    Puts the player icon on the board on player coordinates.
 
-    Args:
-    list: The game board
-    dictionary: The player information - the icon and coordinates
-
-    Returns:
-    list: The game board with the player sign on it
-    '''
     x_before_movement = player.pos_x
     y_before_movement = player.pos_y
 
@@ -43,10 +35,23 @@ def put_player_on_board(board, player, key):
         player.change_position(1, 0)
 
     if board[player.pos_y][player.pos_x] != '#':
+        check_field(board[player.pos_y][player.pos_x], player)
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
     else:
         player.pos_x = x_before_movement
         player.pos_y = y_before_movement
         board[player.pos_y][player.pos_x] = player.icon
+
     return board
+
+
+def check_field(symbol, player):
+    GOLD_FOUND = 100
+
+    if symbol == '$':
+        player.add_money(GOLD_FOUND)
+    elif symbol == '?':
+        pass
+    elif symbol == 'K':
+        pass
