@@ -14,15 +14,17 @@ def create_map_from_file(filename):
 
 
 def append_to_file(filename, table):
-    with open(filename, "a+") as file:
-        for element in table:
-            row = element + ";"
-            file.write(row)
+    from csv import writer
+    with open(filename, "a+", newline = '') as file:
+        csv_writer = writer(file)
+        csv_writer.writerow(table)
 
 
 def get_data_from_file(file_name):
     with open(file_name, "r") as file:
         lines = file.readlines()
-    table = [element.replace("\n", "").split(";") for element in lines]
+    table = [element.replace("\n", "").split(",") for element in lines]
+    for row in table:
+        row[0] = int(row[0])
     return table
     
