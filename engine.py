@@ -55,3 +55,5 @@ def check_field(symbol, player):
         pass
     elif symbol == 'K':
         pass
+    elif symbol == 'î':
+        player.obtained_wand()

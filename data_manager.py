@@ -4,6 +4,8 @@ def create_map_from_file(filename):
     with open(filename, encoding='utf-8') as map_file:
         for row in map_file:
             for element in row:
+                if element == '$':
+                    element = '\033[93m$\033[0m'
                 board_row.append(element)
             board.append(board_row)
             board_row = []

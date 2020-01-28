@@ -59,10 +59,15 @@ def show_inventory(player):
     num_of_spaces = 10
     print(read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')
     if player.wand == 1:
-        print('║  ')
+        print_inventory_item('wand')
     for _ in range(3):
         print((num_of_spaces - player.items) * '║       ', end='')
         print('║   ')
     print(read_box_elements(data_manager.create_map_from_file('inventory_lower')))
 
 
+def print_inventory_item(filename):
+    with open(filename) as item:
+        for row in item:
+            print(row, end='')
+        print('\r')
