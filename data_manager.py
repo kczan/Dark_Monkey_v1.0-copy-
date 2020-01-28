@@ -1,7 +1,7 @@
 def create_map_from_file(filename):
     board = []
     board_row = []
-    with open(filename) as map_file:
+    with open(filename, encoding='utf-8') as map_file:
         for row in map_file:
             for element in row:
                 board_row.append(element)

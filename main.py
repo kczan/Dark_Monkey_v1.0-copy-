@@ -42,6 +42,9 @@ class Player:
     def add_money(self, amount):
         self.money += amount
 
+    def __str__(self):
+        return 'Name: {}, Gold: {}'.format(self.name, self.money)
+
 
 def main():
 
@@ -49,7 +52,7 @@ def main():
 
     is_running = True
     board = data_manager.create_map_from_file('map_one')
-
+    ui.display_board(board)
     while is_running:
         key = key_pressed()
         if key == 'q':
@@ -57,9 +60,9 @@ def main():
         if key == 'z':
             clear_screen()
         else:
-            # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
             board = engine.put_player_on_board(board, player, key)
             ui.display_board(board)
+            print(player)
 
 
 if __name__ == '__main__':

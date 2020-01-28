@@ -24,3 +24,7 @@ def get_input(input_prompt):
     '''
     input_string = input(input_prompt)
     return input_string
+
+
+def print_message(message):
+    print(message)
