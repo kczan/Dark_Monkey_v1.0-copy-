@@ -11,3 +11,18 @@ def create_map_from_file(filename):
             board_row = []
     map_file.close()
     return board
+
+
+def append_to_file(filename, table):
+    with open(filename, "a+") as file:
+        for element in table:
+            row = element + ";"
+            file.write(row)
+
+
+def get_data_from_file(file_name):
+    with open(file_name, "r") as file:
+        lines = file.readlines()
+    table = [element.replace("\n", "").split(";") for element in lines]
+    return table
+    

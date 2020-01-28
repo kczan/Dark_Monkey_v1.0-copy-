@@ -71,3 +71,12 @@ def print_inventory_item(filename):
         for row in item:
             print(row, end='')
         print('\r')
+
+
+def print_table(table):
+    from prettytable import PrettyTable
+    tab = PrettyTable()
+    tab.field_names = ['Result','Name']
+    for i in range(10):
+        tab.add_row(table[i])
+    print(tab)

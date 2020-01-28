@@ -64,6 +64,10 @@ class Player:
     def __str__(self):
         return 'Name: {}, Gold: {}'.format(self.name, self.money)
 
+    def result(self):
+        result = [str(self.money), self.name]
+        return result
+
 
 def main():
     inventory_enabled = False
@@ -73,6 +77,9 @@ def main():
     board = data_manager.create_map_from_file('map_one')
     ui.display_board(board)
     print(player)
+    engine.save_highscore(player) #test
+    highscore_table = sorted(data_manager.get_data_from_file("highscore.csv")) #test
+    ui.print_table(highscore_table) #test
     while is_running:
         key = key_pressed()
         if key == 'q':

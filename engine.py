@@ -57,3 +57,9 @@ def check_field(symbol, player):
         pass
     elif symbol == 'î':
         player.obtained_wand()
+
+
+def save_highscore(player):
+    import data_manager
+    result = player.result()
+    data_manager.append_to_file("highscore.csv", result)
