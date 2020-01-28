@@ -59,15 +59,26 @@ def show_inventory(player):
     num_of_spaces = 10
     print(read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')
     if player.wand == 1:
-        print_inventory_item('wand')
-    for _ in range(3):
-        print((num_of_spaces - player.items) * '║       ', end='')
-        print('║   ')
-    print(read_box_elements(data_manager.create_map_from_file('inventory_lower')))
+        print_inventory_item('wand', player.items)
+    for i in range(4):
+        if player.items > 0:
+            line = 36 + i
+            for j in range(1, num_of_spaces - player.items + 2):
+                column = 1 + 8 * j
+                print(f'\033[{line};{column}f║       ')
+        else:
+            print((num_of_spaces + 1) * '║       ')
+    print('\033[40;0f' + read_box_elements(data_manager.create_map_from_file('inventory_lower')))
 
 
-def print_inventory_item(filename):
+def print_inventory_item(filename, items_obtained):
+    line = 36
+    column = (8 * items_obtained) - 7
+    # print(f'    {line} | {column}')
     with open(filename) as item:
         for row in item:
-            print(row, end='')
-        print('\r')
+            print(f'\033[{line};{column}f{row}')
+            line += 1
+        # for row in item:
+        #     print(row, end='')
+        # print('\r')

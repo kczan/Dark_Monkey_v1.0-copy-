@@ -49,7 +49,7 @@ def put_player_on_board(board, player, key):
 def check_field(symbol, player):
     GOLD_FOUND = 100
 
-    if symbol == '$':
+    if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
     elif symbol == '?':
         pass
