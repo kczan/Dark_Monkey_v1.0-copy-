@@ -98,10 +98,11 @@ def print_inventory_item(filename, items_obtained):
         print(f'\033[{line};{column}f{row}')
         line += 1
 
+
 def print_table(table):
     from prettytable import PrettyTable
     tab = PrettyTable()
-    tab.field_names = ['Result','Name']
+    tab.field_names = ['Result', 'Name']
     for i in range(10):
         tab.add_row(table[i])
     print(tab)
