@@ -23,6 +23,10 @@ def intro():
         key = key_pressed()
         if key == 'q':
             sys.exit(0)
+        elif key == 'h':
+            highscore_table = sorted(data_manager.get_data_from_file("highscore.csv"), reverse = True)
+            ui.print_table(highscore_table)
+            key = key_pressed()
         elif key == ' ':
             break
 
@@ -87,9 +91,7 @@ def main():
     board = data_manager.create_map_from_file('map_one')
     ui.display_board(board)
     print(player)
-    engine.save_highscore(player) #test
-    highscore_table = sorted(data_manager.get_data_from_file("highscore.csv")) #test
-    ui.print_table(highscore_table) #test
+    '''engine.save_highscore(player)'''
     while is_running:
         key = key_pressed()
         if key == 'q':
