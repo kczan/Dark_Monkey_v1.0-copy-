@@ -11,6 +11,19 @@ BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
 
 
+def intro():
+    import time
+    board = data_manager.create_map_from_file('screen_title.txt')
+    ui.display_intro_screen(board)
+    time.sleep(3)
+    board = data_manager.create_map_from_file('screen_monkey.txt')
+    ui.display_intro_screen(board)
+    while True:
+        key = key_pressed()
+        if key == ' ':
+            break
+
+
 def create_player():
     '''
     Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
@@ -55,7 +68,7 @@ class Player:
 def main():
     inventory_enabled = False
     player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON)
-
+    intro()
     is_running = True
     board = data_manager.create_map_from_file('map_one')
     ui.display_board(board)
