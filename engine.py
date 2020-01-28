@@ -49,7 +49,7 @@ def put_player_on_board(board, player, key):
 def check_field(symbol, player):
     GOLD_FOUND = 100
 
-    if symbol == '$':
+    if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
     elif symbol == '?':
         pass
@@ -57,9 +57,15 @@ def check_field(symbol, player):
         pass
     elif symbol == 'î':
         player.obtained_wand()
+<<<<<<< HEAD
 
 
 def save_highscore(player):
     import data_manager
     result = player.result()
     data_manager.append_to_file("highscore.csv", result)
+=======
+    elif symbol == 'Ô':
+        player.obtained_magic_potion()
+
+>>>>>>> 93fc9315786f7eabf6dece94d5b2972c7066fa0d
