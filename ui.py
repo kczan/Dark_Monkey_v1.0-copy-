@@ -1,6 +1,5 @@
 import data_manager
 import helpers
-import os
 
 
 def display_board(board):
@@ -12,7 +11,6 @@ def display_board(board):
     Nothing 
     '''
     helpers.clear_screen()
-    os.system('clear')
     for row in board:
         print(' '.join(row))
     pass
@@ -27,7 +25,6 @@ def display_intro_screen(board):
     Nothing 
     '''
     helpers.clear_screen()
-    os.system('clear')
     for row in board:
         print(''.join(row), end ="")
     pass
@@ -65,7 +62,7 @@ def show_inventory(player):
 
     '''
     # num_of_spaces = 10
-    print('\033[34;0f' + read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')
+    print('\033[34;0f' + read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='') # FIX so it depends on map size instead of 34.
     if player.wand == 1:
         print_inventory_item('wand', 1)
     else:
