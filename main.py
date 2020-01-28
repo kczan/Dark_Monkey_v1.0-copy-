@@ -34,6 +34,8 @@ class Player:
         self.pos_y = pos_y
         self.icon = icon
         self.money = 0
+        self.items = 0
+        self.wand = 0
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -42,27 +44,42 @@ class Player:
     def add_money(self, amount):
         self.money += amount
 
+    def obtained_wand(self):
+        self.wand = 1
+        self.items += 1
+
     def __str__(self):
         return 'Name: {}, Gold: {}'.format(self.name, self.money)
 
 
 def main():
-
+    inventory_enabled = False
     player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON)
 
     is_running = True
     board = data_manager.create_map_from_file('map_one')
     ui.display_board(board)
+    print(player)
     while is_running:
         key = key_pressed()
         if key == 'q':
             is_running = False
         if key == 'z':
             clear_screen()
+        if key == 'i':
+            if not inventory_enabled:
+                ui.show_inventory(player)
+                inventory_enabled = True
+            else:
+                ui.display_board(board)
+                print(player)
+                inventory_enabled = False
         else:
             board = engine.put_player_on_board(board, player, key)
             ui.display_board(board)
             print(player)
+            if inventory_enabled:
+                ui.show_inventory(player)
 
 
 if __name__ == '__main__':
