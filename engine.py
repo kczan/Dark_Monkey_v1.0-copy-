@@ -34,7 +34,7 @@ def put_player_on_board(board, player, key):
     elif key == 'd':
         player.change_position(1, 0)
 
-    if board[player.pos_y][player.pos_x] != '#':
+    if board[player.pos_y][player.pos_x] != ('#' and '\033[92m#\033[0m'):
         check_field(board[player.pos_y][player.pos_x], player)
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
@@ -52,13 +52,17 @@ def check_field(symbol, player):
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
     elif symbol == '?':
-        pass
+        result = question_mark("Password please!", "111")
+        if result == True:
+            pass
     elif symbol == 'K':
         pass
     elif symbol == 'î':
         player.obtained_wand()
     elif symbol == 'Ô':
         player.obtained_magic_potion()
+    elif symbol == 'S':
+        player.obtained_spell()
 
 
 def save_highscore(player):
@@ -66,3 +70,11 @@ def save_highscore(player):
     result = player.result()
     data_manager.append_to_file("highscore.csv", result)
 
+
+def question_mark(question, answer):
+    import ui
+    user_answer = ui.get_input(question)
+    if user_answer == answer:
+        return True
+    else:
+        return False

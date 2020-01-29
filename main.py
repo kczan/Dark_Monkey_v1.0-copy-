@@ -6,6 +6,7 @@ import data_manager
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
+PLAYER_HP = 100
 
 BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
@@ -48,10 +49,11 @@ def create_player():
 
 class Player:
 
-    def __init__(self, name, pos_x, pos_y, icon):
+    def __init__(self, name, pos_x, pos_y, icon, HP):
         self.name = name
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.HP = HP
         self.icon = icon
         self.money = 0
         self.items = 0
@@ -59,6 +61,8 @@ class Player:
         self.wand_printed = False
         self.potion = 0
         self.potion_printed = False
+        self.spell = 0
+        self.spell_printed = False
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -75,8 +79,15 @@ class Player:
         self.potion = 1
         self.items += 1
 
+    def obtained_spell(self):
+        self.spell = 1
+        self.items += 1
+
+    def change_HP(self, amount):
+        self.HP -= amount
+
     def __str__(self):
-        return 'Name: {}, Gold: {} Items: {}'.format(self.name, self.money, self.items)
+        return 'Name: {}, Gold: {}, HP: {}, Items: {}'.format(self.name, self.money, self.HP, self.items)
 
     def result(self):
         result = [str(self.money), self.name]
@@ -86,7 +97,7 @@ class Player:
 def main():
     inventory_enabled = False
     intro()
-    player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON)
+    player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON, PLAYER_HP)
     is_running = True
     board = data_manager.create_map_from_file('map_one')
     ui.display_board(board)
