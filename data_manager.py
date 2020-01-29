@@ -17,10 +17,12 @@ def create_map_from_file(filename):
             for element in row:
                 if element == '$':
                     element = '\033[93m$\033[0m'
-                elif element == '^':
-                    element = '\033[94m^\033[0m'
+                elif element == '¶':
+                    element = '\033[94m¶\033[0m'
                 elif element == '#' and filename == 'map_two.txt':
                     element = '\033[92m#\033[0m'
+                elif element == 'x' and filename == 'map_two.txt':
+                    element = '\033[91mx\033[0m'
                 board_row.append(element)
             board.append(board_row)
             board_row = []

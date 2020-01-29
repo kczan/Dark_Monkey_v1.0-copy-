@@ -82,11 +82,12 @@ def put_player_on_board(board, player, key, current_map):
 
 def check_field(symbol, player, current_map, player_x, player_y, board):
     GOLD_FOUND = 100
+    TRAP = 20
 
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
     elif symbol == '?':
-        if question_mark("Password please!", "111"):
+        if question_mark(player, "Password please!", "111"):
             player.key = 1
     elif symbol == 'K':
         pass
@@ -102,6 +103,8 @@ def check_field(symbol, player, current_map, player_x, player_y, board):
         return data_manager.switch_map(current_map, 'next', player)
     elif symbol == '<':
         return data_manager.switch_map(current_map, 'previous', player)
+    elif symbol == '\033[91mx\033[0m':
+        player.change_hp(TRAP)
     return False
 
 
@@ -111,10 +114,14 @@ def save_highscore(player):
     data_manager.append_to_file("highscore.csv", result)
 
 
-def question_mark(question, answer):
+def question_mark(player, question, answer):
     import ui
+    REWARD = 200
     user_answer = ui.get_input(question)
     if user_answer == answer:
+        ui.print_message("Correct!")
+        player.add_money(REWARD)
         return True
     else:
+        ui.print_message("Wrong!")
         return False
