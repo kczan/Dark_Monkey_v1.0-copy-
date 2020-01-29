@@ -52,7 +52,7 @@ def read_box_elements(element):
         return ''.join(row)
 
 
-def show_inventory(player):
+def show_inventory(player, board):
     '''
     for now:
 
