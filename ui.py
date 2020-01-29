@@ -1,4 +1,6 @@
 import data_manager
+import helpers
+import os
 
 
 def display_board(board):
@@ -9,9 +11,8 @@ def display_board(board):
     Returns:
     Nothing 
     '''
-    import os
+    helpers.clear_screen()
     os.system('clear')
-    os.system('cls')
     for row in board:
         print(' '.join(row))
     pass
@@ -25,9 +26,8 @@ def display_intro_screen(board):
     Returns:
     Nothing 
     '''
-    import os
+    helpers.clear_screen()
     os.system('clear')
-    os.system('cls')
     for row in board:
         print(''.join(row), end ="")
     pass
@@ -64,8 +64,8 @@ def show_inventory(player):
 
 
     '''
-    num_of_spaces = 10
-    print(read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')
+    # num_of_spaces = 10
+    print('\033[34;0f' + read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')
     if player.wand == 1:
         print_inventory_item('wand', 1)
     else:
@@ -75,7 +75,8 @@ def show_inventory(player):
     else:
         print_inventory_item('inventory_middle_empty_cell', 2)
     for i in range(0, 9):
-        print_inventory_item('inventory_middle_empty_cell', 3 + i)  # ONLY FOR TEST PURPOSE! FIX LATER
+        print_inventory_item('inventory_middle_empty_cell', (3 + i))  # ONLY FOR TEST PURPOSE! FIX LATER
+
     # for i in range(4):
     #     if player.items > 0:
     #         line = 36 + i
@@ -84,19 +85,16 @@ def show_inventory(player):
     #             print(f'\033[{line};{column}f║       ')
     #     else:
     #         print((num_of_spaces + 1) * '║       ')
-    print('\033[40;0f' + read_box_elements(data_manager.create_map_from_file('inventory_lower')))
+    print('\033[39;0f' + read_box_elements(data_manager.create_map_from_file('inventory_lower')))
 
 
 def print_inventory_item(filename, items_obtained):
-    line = 36
+    line = 35
     column = (8 * items_obtained) - 7
-    # print(f'{line} | {column}')
     with open(filename) as item:
         for row in item:
-            print(row, end='')
-        print('\r')
-        print(f'\033[{line};{column}f{row}')
-        line += 1
+            print(f'\033[{line};{column}f{row}')
+            line += 1
 
 
 def print_table(table):
