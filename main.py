@@ -3,7 +3,7 @@ import engine
 import ui
 import data_manager
 
-PLAYER_ICON = '\033[35m@\033[0m'
+PLAYER_ICON = '\033[96m@\033[0m'
 FIRST_MAP_START_X = 3
 FIRST_MAP_START_Y = 3
 PLAYER_HP = 100
