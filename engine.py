@@ -26,6 +26,10 @@ def put_player_on_board(board, player, key, current_map):
 
     x_before_movement = player.pos_x
     y_before_movement = player.pos_y
+    left_doors_x = 46
+    left_doors_y = 1
+    right_doors_x = 1
+    right_doors_y = 1
 
     if key == 'w':
         player.change_position(0, -1)
@@ -38,8 +42,16 @@ def put_player_on_board(board, player, key, current_map):
 
     if board[player.pos_y][player.pos_x] not in ('#', '\033[92m#\033[0m'):
         temp = check_field(board[player.pos_y][player.pos_x], player, current_map)
-        if check_field(board[player.pos_y][player.pos_x], player, current_map):
+        if temp:
             board = data_manager.create_map_from_file(data_manager.get_map_name_from_list(temp))
+            if player.pos_x > 40:
+                board[right_doors_y][right_doors_x] = player.icon
+                player.pos_x = right_doors_x
+                player.pos_y = right_doors_y
+            elif player.pos_x < 40:
+                board[left_doors_y][left_doors_x] = player.icon
+                player.pos_x = left_doors_x
+                player.pos_y = left_doors_y
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
     else:
