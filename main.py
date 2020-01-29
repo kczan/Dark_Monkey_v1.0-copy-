@@ -51,6 +51,7 @@ class Player:
         self.potion = 0
         self.spell = 0
         self.current_map = 1
+        self.key = 0
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -73,6 +74,9 @@ class Player:
 
     def change_hp(self, amount):
         self.hp -= amount
+
+    def add_key(self):
+        self.key = 1
 
     def __str__(self):
         return 'Name: {}, Gold: {}, HP: {}, Items: {}'.format(self.name, self.money, self.hp, self.items)
