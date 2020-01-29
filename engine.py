@@ -34,7 +34,7 @@ def put_player_on_board(board, player, key):
     elif key == 'd':
         player.change_position(1, 0)
 
-    if board[player.pos_y][player.pos_x] != ('#' and '\033[92m#\033[0m'):
+    if board[player.pos_y][player.pos_x] != ('#' or '\033[92m#\033[0m'):
         check_field(board[player.pos_y][player.pos_x], player)
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
@@ -52,8 +52,7 @@ def check_field(symbol, player):
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
     elif symbol == '?':
-        result = question_mark("Password please!", "111")
-        if result == True:
+        if question_mark("Password please!", "111"):
             pass
     elif symbol == 'K':
         pass
