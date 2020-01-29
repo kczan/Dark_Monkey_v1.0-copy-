@@ -1,3 +1,14 @@
+def get_map_name_from_list(index):
+    with open('map_list') as map_file:
+        print(index)
+        for row in map_file:
+            list_index, map_name = row.split('|')
+            map_name = map_name.rstrip('\n')
+            if list_index == str(index):
+                return map_name
+        return "FALSE MAP FILE"
+
+
 def create_map_from_file(filename):
     board = []
     board_row = []
@@ -31,4 +42,12 @@ def get_data_from_file(file_name):
     for row in table:
         row[0] = int(row[0])
     return table
-    
+
+
+def switch_map(current_map, direction, player):
+    if direction == 'previous':
+        player.current_map = current_map - 1
+        return player.current_map
+    elif direction == 'next':
+        player.current_map = current_map + 1
+        return player.current_map

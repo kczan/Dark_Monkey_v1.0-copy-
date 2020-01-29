@@ -1,3 +1,5 @@
+import data_manager
+
 
 def create_board(width, height):
 
@@ -20,7 +22,7 @@ def create_board(width, height):
     return map_list
     
 
-def put_player_on_board(board, player, key):
+def put_player_on_board(board, player, key, current_map):
 
     x_before_movement = player.pos_x
     y_before_movement = player.pos_y
@@ -34,8 +36,10 @@ def put_player_on_board(board, player, key):
     elif key == 'd':
         player.change_position(1, 0)
 
-    if board[player.pos_y][player.pos_x] != ('#' or '\033[92m#\033[0m'):
-        check_field(board[player.pos_y][player.pos_x], player)
+    if board[player.pos_y][player.pos_x] not in ('#', '\033[92m#\033[0m'):
+        temp = check_field(board[player.pos_y][player.pos_x], player, current_map)
+        if check_field(board[player.pos_y][player.pos_x], player, current_map):
+            board = data_manager.create_map_from_file(data_manager.get_map_name_from_list(temp))
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
     else:
@@ -46,7 +50,7 @@ def put_player_on_board(board, player, key):
     return board
 
 
-def check_field(symbol, player):
+def check_field(symbol, player, current_map):
     GOLD_FOUND = 100
 
     if symbol == '\033[93m$\033[0m':
@@ -62,6 +66,11 @@ def check_field(symbol, player):
         player.obtained_magic_potion()
     elif symbol == 'S':
         player.obtained_spell()
+    elif symbol == '>':
+        return data_manager.switch_map(current_map, 'next', player)
+    elif symbol == '<':
+        return data_manager.switch_map(current_map, 'previous', player)
+    return False
 
 
 def save_highscore(player):

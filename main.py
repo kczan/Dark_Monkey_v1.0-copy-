@@ -3,9 +3,9 @@ import engine
 import ui
 import data_manager
 
-PLAYER_ICON = '@'
-PLAYER_START_X = 3
-PLAYER_START_Y = 3
+PLAYER_ICON = '\033[35m@\033[0m'
+FIRST_MAP_START_X = 3
+FIRST_MAP_START_Y = 3
 PLAYER_HP = 100
 
 BOARD_WIDTH = 80
@@ -26,28 +26,15 @@ def intro():
         if key == 'q':
             sys.exit(0)
         elif key == 'h':
+            clear_screen()
             highscore_table = sorted(data_manager.get_data_from_file("highscore.csv"), reverse=True)
             ui.print_table(highscore_table)
             if key_pressed() == 'h':
+                ui.display_intro_screen(board)
                 break
         elif key == ' ':
             clear_screen()
             break
-
-
-def create_player():
-    '''
-    Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
-    Fell free to extend this dictionary!
-
-    Returns:
-    dictionary
-    '''
-    player = {}
-    player["x"] = PLAYER_START_X
-    player["y"] = PLAYER_START_Y
-    player["icon"] = PLAYER_ICON
-    return player
 
 
 class Player:
@@ -63,6 +50,7 @@ class Player:
         self.wand = 0
         self.potion = 0
         self.spell = 0
+        self.current_map = 1
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -97,10 +85,10 @@ class Player:
 def main():
     inventory_enabled = False
     intro()
-    player = Player(ui.get_input('Choose a name for your character: '), PLAYER_START_X, PLAYER_START_Y, PLAYER_ICON, PLAYER_HP)
+    player = Player(ui.get_input('Choose a name for your character: '), FIRST_MAP_START_X, FIRST_MAP_START_Y, PLAYER_ICON, PLAYER_HP)
     is_running = True
     board = data_manager.create_map_from_file('map_one')
-    board[PLAYER_START_Y][PLAYER_START_X] = player.icon
+    board[FIRST_MAP_START_Y][FIRST_MAP_START_X] = player.icon
     ui.display_board(board)
     print(player)
     '''engine.save_highscore(player)'''
@@ -119,7 +107,7 @@ def main():
                 print(player)
                 inventory_enabled = False
         else:
-            board = engine.put_player_on_board(board, player, key)
+            board = engine.put_player_on_board(board, player, key, player.current_map)
             ui.display_board(board)
             print(player)
             if inventory_enabled:
