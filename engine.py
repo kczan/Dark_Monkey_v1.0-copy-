@@ -40,7 +40,7 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
-    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', 'M', '?', '\033[95m*\033[0m']
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', '\\', 'K', 'T', 'M', '?', '\033[95m*\033[0m']
     MONSTER_SYMBOLS = ['K', 'T', 'M']
 
     if key == 'w':
