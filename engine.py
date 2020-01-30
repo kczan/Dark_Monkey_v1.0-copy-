@@ -44,7 +44,7 @@ def put_player_on_board(board, player, key, current_map, current_question):
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
-    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', 'K', 'T', '?']
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', '?']
     MONSTER_SYMBOLS = ['K', 'T']
 
     if key == 'w':
@@ -57,7 +57,7 @@ def put_player_on_board(board, player, key, current_map, current_question):
         player.change_position(1, 0)
 
     if board[player.pos_y][player.pos_x] not in OBSTACLE_SYMBOLS:
-        temp = check_field(board[player.pos_y][player.pos_x], player, current_map, x_before_movement, y_before_movement, board)
+        temp = check_field(board[player.pos_y][player.pos_x], player, current_map)
         if temp:
             board = data_manager.create_map_from_file(data_manager.get_map_name_from_list(temp))
             if player.pos_x > 40:
@@ -89,13 +89,14 @@ def put_player_on_board(board, player, key, current_map, current_question):
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
     else:
         board = keep_player_still(player, x_before_movement, y_before_movement, board)
-
+        
     return board, current_question
 
 
-def check_field(symbol, player, current_map, player_x, player_y, board):
+def check_field(symbol, player, current_map):
     GOLD_FOUND = 100
     TRAP = -20
+    MEDKIT = 15
 
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
@@ -113,7 +114,9 @@ def check_field(symbol, player, current_map, player_x, player_y, board):
         if player.hp + 15 > 100:
             player.hp = 100
         else:
-            player.change_hp(15)
+            player.change_hp(MEDKIT)
+    elif symbol == '\033[95m*\033[0m':
+        pass
     elif symbol == '>':
         return data_manager.switch_map(current_map, 'next', player)
     elif symbol == '<':
@@ -151,6 +154,9 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
         if player.wand == 1:
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
+            player.message = 'The skeleton left some money behind. Wonder where he kept it?'
+            player.show_message()
+            player.add_money(100)
         else:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
             player.message = 'OUCH! To defeat the skeleton, you need some kind of magic item!'
@@ -161,6 +167,9 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
         if player.sword == 1:
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
+            player.message = 'The troll had some gold. It stinks though...'
+            player.show_message()
+            player.add_money(100)
         else:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
             player.message = 'That troll seems to be immune to my spells... Maybe a regular weapon will help?'
@@ -173,7 +182,5 @@ def questions_generator(index):
     questions_list = data_manager.get_questions("questions.txt")
     que_index = 0
     ans_index = 1
-    qa_list = []
-    qa_list.append(questions_list[index][que_index])
-    qa_list.append(questions_list[index][ans_index])
+    qa_list = [questions_list[index][que_index], questions_list[index][ans_index]]
     return qa_list
