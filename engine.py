@@ -87,7 +87,7 @@ def put_player_on_board(board, player, key, current_map):
 
 def check_field(symbol, player, current_map, player_x, player_y, board):
     GOLD_FOUND = 100
-    TRAP = 20
+    TRAP = -20
 
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
@@ -98,10 +98,17 @@ def check_field(symbol, player, current_map, player_x, player_y, board):
         player.obtained_wand()
     elif symbol == 'Ô':
         player.obtained_magic_potion()
-    elif symbol == 'S':
+    elif symbol == 's':
         player.obtained_spell()
     elif symbol == '¥':
         player.add_key()
+    elif symbol == 'ƒ':
+        player.obtained_sword()
+    elif symbol == '+':
+        if player.hp + 15 > 100:
+            player.hp = 100
+        else:
+            player.change_hp(15)
     elif symbol == '>':
         return data_manager.switch_map(current_map, 'next', player)
     elif symbol == '<':
@@ -137,6 +144,17 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
             board[y_before_movement][x_before_movement] = '.'
         else:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
-            player.message = 'To defeat the skeleton, you need some kind of magic item!'
+            player.message = 'OUCH! To defeat the skeleton, you need some kind of magic item!'
             player.show_message()
+            player.change_hp(-10)
+
+    if symbol == 'T':  # Troll, defeatable by a sword
+        if player.sword == 1:
+            board[player.pos_y][player.pos_x] = player.icon
+            board[y_before_movement][x_before_movement] = '.'
+        else:
+            board = keep_player_still(player, x_before_movement, y_before_movement, board)
+            player.message = 'That troll seems to be immune to my spells... Maybe a regular weapon will help?'
+            player.show_message()
+            player.change_hp(-15)
     return board
