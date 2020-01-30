@@ -99,7 +99,7 @@ def main():
     inventory_enabled = False
     intro()
     current_question = engine.questions_generator(0)
-    q_index = -1
+    q_index = 0
     player = Player(ui.get_input('Choose a name for your character: '), FIRST_MAP_START_X, FIRST_MAP_START_Y, PLAYER_ICON, PLAYER_HP)
     is_running = True
     board = data_manager.create_map_from_file('map_one')
