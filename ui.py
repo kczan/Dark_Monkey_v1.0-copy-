@@ -90,7 +90,7 @@ def print_inventory_item(filename, items_obtained, board):
     map_height = space_under_map + len(board) * 2
     line = map_height + 1
     column = (8 * items_obtained) - 7
-    with open(filename) as item:
+    with open(filename, encoding="UTF-8") as item:
         for row in item:
             print(f'\033[{line};{column}f{row}')
             line += 1

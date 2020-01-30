@@ -34,7 +34,7 @@ def wipe_element(board, pos_x, pos_y, player):
     board[pos_y][pos_x] = '.'
 
 
-def put_player_on_board(board, player, key, current_map):
+def put_player_on_board(board, player, key, current_map, current_question):
     '''
     Function too big, let's try to divide it into smaller ones if we can.
     '''
@@ -44,7 +44,7 @@ def put_player_on_board(board, player, key, current_map):
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
-    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', 'K', 'T']
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', 'K', 'T', '?']
     MONSTER_SYMBOLS = ['K', 'T']
 
     if key == 'w':
@@ -79,21 +79,26 @@ def put_player_on_board(board, player, key, current_map):
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
             player.key = 0
+    elif board[player.pos_y][player.pos_x] == '?':
+        if question_mark(player, current_question[0], current_question[1]):
+            board[player.pos_y][player.pos_x] = player.icon
+            board[y_before_movement][x_before_movement] = '.'
+            q_index = 0
+            current_question = questions_generator(q_index+1)
+        else:
+            board = keep_player_still(player, x_before_movement, y_before_movement, board)
     else:
         board = keep_player_still(player, x_before_movement, y_before_movement, board)
 
-    return board
+    return board, current_question
 
 
 def check_field(symbol, player, current_map, player_x, player_y, board):
     GOLD_FOUND = 100
     TRAP = 20
-
+    
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
-    elif symbol == '?':
-        if question_mark(player, "Password please!", "111"):
-            player.key = 1
     elif symbol == 'î':
         player.obtained_wand()
     elif symbol == 'Ô':
@@ -120,13 +125,17 @@ def save_highscore(player):
 def question_mark(player, question, answer):
     import ui
     REWARD = 200
+    LOST = -50
     user_answer = ui.get_input(question)
     if user_answer == answer:
-        ui.print_message("Correct!")
+        player.message = "Correct! Reward: 200 gold"
+        player.show_message()
         player.add_money(REWARD)
         return True
     else:
-        ui.print_message("Wrong!")
+        player.message = "Wrong! You lost 50 gold"
+        player.show_message()
+        player.add_money(LOST)
         return False
 
 
@@ -140,3 +149,13 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
             player.message = 'To defeat the skeleton, you need some kind of magic item!'
             player.show_message()
     return board
+
+
+def questions_generator(index):
+    questions_list = data_manager.get_questions("questions.txt")
+    que_index = 0
+    ans_index = 1
+    qa_list = []
+    qa_list.append(questions_list[index][que_index])
+    qa_list.append(questions_list[index][ans_index])
+    return qa_list

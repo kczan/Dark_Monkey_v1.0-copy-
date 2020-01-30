@@ -53,3 +53,10 @@ def switch_map(current_map, direction, player):
     elif direction == 'next':
         player.current_map = current_map + 1
         return player.current_map
+
+
+def get_questions(filename):
+    with open(filename, "r") as questions_file:
+        lines = questions_file.readlines()
+        questions = [element.replace("\n", "").split(";") for element in lines]
+        return questions
