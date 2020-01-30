@@ -44,7 +44,7 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
-    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', '?']
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', '?', '\033[95m*\033[0m']
     MONSTER_SYMBOLS = ['K', 'T']
 
     if key == 'w':
@@ -89,6 +89,8 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
     elif board[player.pos_y][player.pos_x] == '\033[95m*\033[0m':
         player.message = current_question[2]
         player.show_message()
+        board[player.pos_y][player.pos_x] = player.icon
+        board[y_before_movement][x_before_movement] = '.'
     else:
         board = keep_player_still(player, x_before_movement, y_before_movement, board)
 
