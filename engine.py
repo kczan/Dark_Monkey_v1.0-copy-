@@ -137,7 +137,7 @@ def question_mark(player, question, answer):
     REWARD = 200
     LOST = -50
     user_answer = ui.get_input(question)
-    if user_answer == answer:
+    if user_answer.upper() == answer:
         player.message = "Correct! Reward: 200 gold"
         player.show_message()
         player.add_money(REWARD)
@@ -145,11 +145,11 @@ def question_mark(player, question, answer):
     else:
         if player.money + LOST < 0:
             player.money = 0
-            player.message = "Wrong!"
+            player.message = "Wrong! Hint can be helpful."
             player.show_message()
         else:    
             player.add_money(LOST)
-            player.message = "Wrong! You lost 50 gold"
+            player.message = "Wrong! You lost 50 gold. Hints can be helpful."
             player.show_message()
         return False
 
