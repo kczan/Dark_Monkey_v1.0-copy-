@@ -13,7 +13,6 @@ def display_board(board):
     helpers.clear_screen()
     for row in board:
         print(' '.join(row))
-    pass
 
 
 def display_intro_screen(board):
@@ -71,6 +70,14 @@ def show_inventory(player, board):
         print_inventory_item('inventory_middle_empty_cell', 1, board)
     if player.potion == 1:
         print_inventory_item('potion', 2, board)
+    else:
+        print_inventory_item('inventory_middle_empty_cell', 2, board)
+    if player.spell == 1:
+        print_inventory_item('book1', 3, board)
+        print_inventory_item('inventory_middle_empty_cell', 4, board)
+    elif player.spell == 2:
+        print_inventory_item('book1', 3, board)
+        print_inventory_item('book2', 4, board)
     else:
         print_inventory_item('inventory_middle_empty_cell', 2, board)
     for i in range(0, 9):

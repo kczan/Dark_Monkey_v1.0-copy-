@@ -52,6 +52,7 @@ class Player:
         self.spell = 0
         self.current_map = 1
         self.key = 0
+        self.message = ''
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -85,6 +86,9 @@ class Player:
         result = [str(self.money), self.name]
         return result
 
+    def show_message(self):
+        print(f'\033[50;0f{self.message}')
+
 
 def main():
     inventory_enabled = False
@@ -110,10 +114,12 @@ def main():
                 ui.display_board(board)
                 print(player)
                 inventory_enabled = False
-        else:
+        if key in ['w', 'a', 's', 'd']:
+            player.message = ''
             board = engine.put_player_on_board(board, player, key, player.current_map)
             ui.display_board(board)
             print(player)
+            player.show_message()
             if inventory_enabled:
                 ui.show_inventory(player, board)
 

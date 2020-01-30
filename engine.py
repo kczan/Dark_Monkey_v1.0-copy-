@@ -35,13 +35,17 @@ def wipe_element(board, pos_x, pos_y, player):
 
 
 def put_player_on_board(board, player, key, current_map):
-
+    '''
+    Function too big, let's try to divide it into smaller ones if we can.
+    '''
     x_before_movement = player.pos_x
     y_before_movement = player.pos_y
     left_doors_x = 46
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', 'K', 'T']
+    MONSTER_SYMBOLS = ['K', 'T']
 
     if key == 'w':
         player.change_position(0, -1)
@@ -52,7 +56,7 @@ def put_player_on_board(board, player, key, current_map):
     elif key == 'd':
         player.change_position(1, 0)
 
-    if board[player.pos_y][player.pos_x] not in ('#', '\033[92m#\033[0m', '|'):
+    if board[player.pos_y][player.pos_x] not in OBSTACLE_SYMBOLS:
         temp = check_field(board[player.pos_y][player.pos_x], player, current_map, x_before_movement, y_before_movement, board)
         if temp:
             board = data_manager.create_map_from_file(data_manager.get_map_name_from_list(temp))
@@ -66,10 +70,11 @@ def put_player_on_board(board, player, key, current_map):
                 player.pos_y = left_doors_y
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
+    elif board[player.pos_y][player.pos_x] in MONSTER_SYMBOLS:
+        board = fight_monster(board[player.pos_y][player.pos_x], board, player, x_before_movement, y_before_movement)
     elif board[player.pos_y][player.pos_x] == '|':
         if player.key == 0:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
-            print('\033[50;0fDUPA')
         else:
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
@@ -89,8 +94,6 @@ def check_field(symbol, player, current_map, player_x, player_y, board):
     elif symbol == '?':
         if question_mark(player, "Password please!", "111"):
             player.key = 1
-    elif symbol == 'K':
-        pass
     elif symbol == 'î':
         player.obtained_wand()
     elif symbol == 'Ô':
@@ -125,3 +128,15 @@ def question_mark(player, question, answer):
     else:
         ui.print_message("Wrong!")
         return False
+
+
+def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
+    if symbol == 'K':  # skeleton, weak to wand spells
+        if player.wand == 1:
+            board[player.pos_y][player.pos_x] = player.icon
+            board[y_before_movement][x_before_movement] = '.'
+        else:
+            board = keep_player_still(player, x_before_movement, y_before_movement, board)
+            player.message = 'To defeat the skeleton, you need some kind of magic item!'
+            player.show_message()
+    return board
