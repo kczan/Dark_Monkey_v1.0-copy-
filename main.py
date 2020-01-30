@@ -82,7 +82,10 @@ class Player:
         self.items += 1
 
     def change_hp(self, amount):
-        self.hp += amount
+        if self.hp + amount > 100:
+            self.hp = 100
+        else:
+            self.hp += amount
 
     def add_key(self):
         self.key = 1
@@ -99,6 +102,14 @@ class Player:
 
     def show_hint(self):
         print(f'\033[36;0f{self.hint}')
+
+    def use_potion(self):
+        if self.potion > 0:
+            self.potion -= 1
+            self.change_hp(50)
+        else:
+            self.message = "You don't have any potion to use!"
+            self.show_message()
 
 
 def main():
@@ -140,6 +151,12 @@ def main():
                 ui.display_board(board)
                 print(player)
                 hint_enabled = False
+        if key == 'u':
+            player.use_potion()
+            ui.display_board(board)
+            print(player)
+            if inventory_enabled:
+                ui.show_inventory(player, board)
         if key in ['w', 'a', 's', 'd']:
             player.message = ''
             board, current_question, q_index = engine.put_player_on_board(board, player, key, player.current_map, current_question, q_index)

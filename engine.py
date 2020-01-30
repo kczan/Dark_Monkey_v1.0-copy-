@@ -103,7 +103,6 @@ def check_field(symbol, player, current_map):
     GOLD_FOUND = 100
     TRAP = -20
     MEDKIT = 15
-    FULL_HP = 100
 
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
@@ -118,10 +117,7 @@ def check_field(symbol, player, current_map):
     elif symbol == 'ƒ':
         player.obtained_sword()
     elif symbol == '+':
-        if player.hp + MEDKIT > FULL_HP:
-            player.hp = FULL_HP
-        else:
-            player.change_hp(MEDKIT)
+        player.change_hp(MEDKIT)
     elif symbol == '>':
         return data_manager.switch_map(current_map, 'next', player)
     elif symbol == '<':
