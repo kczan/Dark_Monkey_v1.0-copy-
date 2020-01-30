@@ -1,12 +1,8 @@
-import os
 import random
 import time
 import sys
 import helpers
-
-
-def clear_console():
-    os.system('cls' if os.name == 'nt' else 'clear')
+import ui
 
 
 def display_boss(): 
@@ -17,77 +13,53 @@ def display_boss():
 
 def play_cold_warm():
     user_guesses = 10
-    correct_answer = generate_unique_number()
+    correct_answer = random.choice(range(21))
 
     while user_guesses > 0:
-        user_input = get_user_input()
-        feedback = compare_user_answer(user_input, correct_answer)
-        print('MAUPA: ', end='')
+        user_input = ui.get_input("What's your guess? ")
+        result = compare_user_answer(user_input, correct_answer)
+        time.sleep(1)
         helpers.clear_screen()
         display_boss()
-        for i in feedback:
-            print(i, end=' ')
-        print('Guesses left:', user_guesses - 1)
-
-        if feedback == ['hot']:
-            display_screen('win.txt')
+        if result:
+            print('You have defeated me... Pure luck!')
             time.sleep(3)
-            sys.exit()
+            display_screen('win.txt')
+            break
         user_guesses -= 1
+        print('Guesses left:', user_guesses)
 
         if user_guesses == 0:
             display_screen('lose.txt')
-            sys.exit()
-
-
-def get_user_input():
-    while True:  
-        user_input = input('Enter unique number: ')
-        if user_input.isdigit() and len(user_input) == 1 and len(set(user_input)) == len(user_input):
-            break
-        else:
-            print('ErrrRRoorNumber have 1 unique digits!')
-    return list(user_input)
+            sys.exit(0)
 
 
 def display_screen(filename):
-    clear_console()
+    helpers.clear_screen()
     with open(filename) as f:
         read_data = f.read()
     print(read_data)
 
 
 def compare_user_answer(guess, correct_answer):
-    hints = []
-    for i in range(len(guess)):
-        if guess[i] == correct_answer[i]:
-            hints.insert(0, 'hot')
-        elif guess[i] in correct_answer:
-            hints.append('warm')
-    if not hints:
-        hints = ['cold']
-    return hints
+    if int(guess) < int(correct_answer):
+        print('Too low! Try again.')
+        return False
+    elif int(guess) > int(correct_answer):
+        print('Too high!')
+        return False
+    else:
+        return True
 
 
-def generate_unique_number():
-    unique_number_list = [str(x) for x in range(10)]
-    random.shuffle(unique_number_list)
-    return unique_number_list[:3]
-
-
-def start_fight():
+def start_fight(player):
     helpers.clear_screen()
     display_boss()
 
     while True:
-        answer = input('fight?').lower()
         helpers.clear_screen()
         display_boss()
-        if answer == 'yes':
-            print('BOSS: lets play cold/warm/hot! you have 10 guesses name the number? ')
-            play_cold_warm()
-            break
-
-
-if __name__ == '__main__':
-    start_fight()
+        print('BOSS: lets play High/Low! You have 10 chances to guess my number from 0 to 20. ')
+        play_cold_warm()
+        print(player)
+        break

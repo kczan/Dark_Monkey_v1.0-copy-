@@ -1,5 +1,5 @@
 import data_manager
-
+import boss
 
 def create_board(width, height):
 
@@ -124,6 +124,8 @@ def check_field(symbol, player, current_map):
         return data_manager.switch_map(current_map, 'previous', player)
     elif symbol == '\033[91mx\033[0m':
         player.change_hp(TRAP)
+    elif symbol == ':':
+        boss.start_fight(player)
     return False
 
 
