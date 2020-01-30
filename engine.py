@@ -94,7 +94,6 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
     else:
         board = keep_player_still(player, x_before_movement, y_before_movement, board)
 
-
     return board, current_question, q_index
 
 
