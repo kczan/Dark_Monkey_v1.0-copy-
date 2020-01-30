@@ -2,6 +2,8 @@ from helpers import *
 import engine
 import ui
 import data_manager
+import sys
+
 
 PLAYER_ICON = '\033[96m@\033[0m'
 FIRST_MAP_START_X = 3
@@ -15,6 +17,7 @@ BOARD_HEIGHT = 30
 def intro():
     import time
     import sys
+    clear_screen()
     board = data_manager.create_map_from_file('screen_title.txt')
     ui.display_intro_screen(board)
     time.sleep(3)
@@ -31,7 +34,6 @@ def intro():
             ui.print_table(highscore_table)
             if key_pressed() == 'h':
                 ui.display_intro_screen(board)
-                break
         elif key == ' ':
             clear_screen()
             break
@@ -54,6 +56,7 @@ class Player:
         self.current_map = 1
         self.key = 0
         self.message = ''
+        self.hint = ''
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -94,9 +97,13 @@ class Player:
     def show_message(self):
         print(f'\033[50;0f{self.message}')
 
+    def show_hint(self):
+        print(f'\033[36;0f{self.hint}')
+
 
 def main():
     inventory_enabled = False
+    hint_enabled = False
     intro()
     current_question = engine.questions_generator(0)
     q_index = 0
@@ -117,10 +124,22 @@ def main():
             if not inventory_enabled:
                 ui.show_inventory(player, board)
                 inventory_enabled = True
+                hint_enabled = False
             else:
                 ui.display_board(board)
                 print(player)
                 inventory_enabled = False
+        if key == 'k':
+            if not hint_enabled:
+                ui.display_board(board)
+                print(player)
+                player.show_hint()
+                hint_enabled = True
+                inventory_enabled = False
+            else:
+                ui.display_board(board)
+                print(player)
+                hint_enabled = False
         if key in ['w', 'a', 's', 'd']:
             player.message = ''
             board, current_question, q_index = engine.put_player_on_board(board, player, key, player.current_map, current_question, q_index)

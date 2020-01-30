@@ -44,8 +44,8 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
     left_doors_y = 1
     right_doors_x = 1
     right_doors_y = 1
-    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', '?', '\033[95m*\033[0m']
-    MONSTER_SYMBOLS = ['K', 'T']
+    OBSTACLE_SYMBOLS = ['#', '\033[92m#\033[0m', '|', '/', 'K', 'T', 'M', '?', '\033[95m*\033[0m']
+    MONSTER_SYMBOLS = ['K', 'T', 'M']
 
     if key == 'w':
         player.change_position(0, -1)
@@ -89,6 +89,7 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
     elif board[player.pos_y][player.pos_x] == '\033[95m*\033[0m':
         player.message = current_question[2]
+        player.hint = player.message
         player.show_message()
         board[player.pos_y][player.pos_x] = player.icon
         board[y_before_movement][x_before_movement] = '.'
@@ -121,8 +122,6 @@ def check_field(symbol, player, current_map):
             player.hp = FULL_HP
         else:
             player.change_hp(MEDKIT)
-    elif symbol == '\033[95m*\033[0m':
-        pass
     elif symbol == '>':
         return data_manager.switch_map(current_map, 'next', player)
     elif symbol == '<':
@@ -186,6 +185,19 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
             player.message = 'That troll seems to be immune to my spells... Maybe a regular weapon will help?'
             player.show_message()
             player.change_hp(-15)
+    if symbol == 'M':  # Mage, you have to be really skilled at spells to defeat him
+        if player.spell == 3:
+            board[player.pos_y][player.pos_x] = player.icon
+            board[y_before_movement][x_before_movement] = '.'
+            player.message = 'This powerful sorcerer had a lot of gold on him!'
+            player.show_message()
+            player.add_money(400)
+        else:
+            board = keep_player_still(player, x_before_movement, y_before_movement, board)
+            player.message = 'This mage is really powerful... I need to learn some new skills before I can defeat him.'
+            player.show_message()
+            player.change_hp(-50)
+
     return board
 
 

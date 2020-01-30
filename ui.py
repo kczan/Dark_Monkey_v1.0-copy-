@@ -76,19 +76,27 @@ def show_inventory(player, board):
     if player.spell == 1:
         print_inventory_item('book1', 3, board)
         print_inventory_item('inventory_middle_empty_cell', 4, board)
+        print_inventory_item('inventory_middle_empty_cell', 5, board)
+
     elif player.spell == 2:
         print_inventory_item('book1', 3, board)
         print_inventory_item('book2', 4, board)
+        print_inventory_item('inventory_middle_empty_cell', 5, board)
+    elif player.spell == 3:
+        print_inventory_item('book1', 3, board)
+        print_inventory_item('book2', 4, board)
+        print_inventory_item('book3', 5, board)
     else:
         print_inventory_item('inventory_middle_empty_cell', 3, board)
         print_inventory_item('inventory_middle_empty_cell', 4, board)
+        print_inventory_item('inventory_middle_empty_cell', 5, board)
 
     if player.sword == 1:
-        print_inventory_item('sword', 5, board)
+        print_inventory_item('sword', 6, board)
     else:
-        print_inventory_item('inventory_middle_empty_cell', 5, board)
-    for i in range(0, 6):
-        print_inventory_item('inventory_middle_empty_cell', (6 + i), board)  # ONLY FOR TEST PURPOSE! FIX LATER
+        print_inventory_item('inventory_middle_empty_cell', 6, board)
+    for i in range(0, 5):
+        print_inventory_item('inventory_middle_empty_cell', (7 + i), board)  # ONLY FOR TEST PURPOSE! FIX LATER
     print(f'\033[{map_height + inventory_height};0f' + read_box_elements(data_manager.create_map_from_file('inventory_lower')))
 
 
