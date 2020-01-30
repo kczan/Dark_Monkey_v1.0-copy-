@@ -1,4 +1,4 @@
-Question 0?;Ans0;Hint1
-Question 1?;Ans1;Hint2
-Question 2?;Ans2;Hint3
-Question 3?;Ans3;Hint4
+Password, please? ;246;Magic numbers are 246
+Use letters from hint and try to cross the gate... ;OPEN;N E O P
+Ignore beautiful flowers. What else you can smell? ;TROLL;Remember stinky troll?
+You can't go any further without password. ;123;Try password which you already had and divide it by 2.
