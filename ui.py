@@ -63,7 +63,7 @@ def show_inventory(player, board):
     space_under_map = 4
     map_height = space_under_map + len(board) * 2
     inventory_height = 5
-    print(f'\033[{map_height};0f' + read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='') # FIX so it depends on map size instead of 34.
+    print(f'\033[{map_height};0f' + read_box_elements(data_manager.create_map_from_file('inventory_upper')), end='')  # FIX so it depends on map size instead of 34.
     if player.wand == 1:
         print_inventory_item('wand', 1, board)
     else:
@@ -72,6 +72,7 @@ def show_inventory(player, board):
         print_inventory_item('potion', 2, board)
     else:
         print_inventory_item('inventory_middle_empty_cell', 2, board)
+
     if player.spell == 1:
         print_inventory_item('book1', 3, board)
         print_inventory_item('inventory_middle_empty_cell', 4, board)
@@ -79,9 +80,15 @@ def show_inventory(player, board):
         print_inventory_item('book1', 3, board)
         print_inventory_item('book2', 4, board)
     else:
-        print_inventory_item('inventory_middle_empty_cell', 2, board)
-    for i in range(0, 9):
-        print_inventory_item('inventory_middle_empty_cell', (3 + i), board)  # ONLY FOR TEST PURPOSE! FIX LATER
+        print_inventory_item('inventory_middle_empty_cell', 3, board)
+        print_inventory_item('inventory_middle_empty_cell', 4, board)
+
+    if player.sword == 1:
+        print_inventory_item('sword', 5, board)
+    else:
+        print_inventory_item('inventory_middle_empty_cell', 5, board)
+    for i in range(0, 6):
+        print_inventory_item('inventory_middle_empty_cell', (6 + i), board)  # ONLY FOR TEST PURPOSE! FIX LATER
     print(f'\033[{map_height + inventory_height};0f' + read_box_elements(data_manager.create_map_from_file('inventory_lower')))
 
 

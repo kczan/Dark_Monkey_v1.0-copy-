@@ -50,6 +50,7 @@ class Player:
         self.wand = 0
         self.potion = 0
         self.spell = 0
+        self.sword = 0
         self.current_map = 1
         self.key = 0
         self.message = ''
@@ -65,16 +66,20 @@ class Player:
         self.wand = 1
         self.items += 1
 
+    def obtained_sword(self):
+        self.sword = 1
+        self.items += 1
+
     def obtained_magic_potion(self):
         self.potion = 1
         self.items += 1
 
     def obtained_spell(self):
-        self.spell = 1
+        self.spell += 1
         self.items += 1
 
     def change_hp(self, amount):
-        self.hp -= amount
+        self.hp += amount
 
     def add_key(self):
         self.key = 1
