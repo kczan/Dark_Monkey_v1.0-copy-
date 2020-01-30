@@ -83,7 +83,8 @@ def put_player_on_board(board, player, key, current_map, current_question, q_ind
         if question_mark(player, current_question[0], current_question[1]):
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
-            current_question = questions_generator(q_index+1)
+            current_question = questions_generator(q_index)
+            q_index += 1
         else:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
     elif board[player.pos_y][player.pos_x] == '\033[95m*\033[0m':
@@ -101,6 +102,7 @@ def check_field(symbol, player, current_map):
     GOLD_FOUND = 100
     TRAP = -20
     MEDKIT = 15
+    FULL_HP = 100
 
     if symbol == '\033[93m$\033[0m':
         player.add_money(GOLD_FOUND)
@@ -115,8 +117,8 @@ def check_field(symbol, player, current_map):
     elif symbol == 'ƒ':
         player.obtained_sword()
     elif symbol == '+':
-        if player.hp + 15 > 100:
-            player.hp = 100
+        if player.hp + MEDKIT > FULL_HP:
+            player.hp = FULL_HP
         else:
             player.change_hp(MEDKIT)
     elif symbol == '\033[95m*\033[0m':
