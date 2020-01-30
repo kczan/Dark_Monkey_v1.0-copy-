@@ -9,15 +9,13 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def display_boss():
-    
+def display_boss(): 
     with open('boss.txt') as f:
         read_data = f.read()
-    print('\033[91m' + read_data + '\033[0m')
-    
+    print('\033[91m' + read_data + '\033[0m') 
+
 
 def play_cold_warm():
-
     user_guesses = 10
     correct_answer = generate_unique_number()
 
@@ -33,9 +31,6 @@ def play_cold_warm():
 
         if feedback == ['hot']:
             display_screen('win.txt')
-            score = user_guesses * 10
-            highscore.add_score_to_file(score)
-            highscore.display_highscore()
             time.sleep(3)
             sys.exit()
         user_guesses -= 1
@@ -46,19 +41,16 @@ def play_cold_warm():
 
 
 def get_user_input():
-
-    while True:
-        
-        user_input = input('Enter 3-digit unique number: ')
+    while True:  
+        user_input = input('Enter unique number: ')
         if user_input.isdigit() and len(user_input) == 1 and len(set(user_input)) == len(user_input):
             break
         else:
-            print('Number should have 3 unique digits!')
+            print('ErrrRRoorNumber have 1 unique digits!')
     return list(user_input)
 
 
 def display_screen(filename):
-    
     clear_console()
     with open(filename) as f:
         read_data = f.read()
@@ -66,7 +58,6 @@ def display_screen(filename):
 
 
 def compare_user_answer(guess, correct_answer):
-
     hints = []
     for i in range(len(guess)):
         if guess[i] == correct_answer[i]:
@@ -79,14 +70,12 @@ def compare_user_answer(guess, correct_answer):
 
 
 def generate_unique_number():
-
     unique_number_list = [str(x) for x in range(10)]
     random.shuffle(unique_number_list)
     return unique_number_list[:3]
 
 
 def start_fight():
-
     helpers.clear_screen()
     display_boss()
 
@@ -95,14 +84,8 @@ def start_fight():
         helpers.clear_screen()
         display_boss()
         if answer == 'yes':
-            print('BOSS: lets play cold/warm, I thought of  unique digit number, you have 10 guesses')
+            print('BOSS: lets play cold/warm/hot! you have 10 guesses name the number? ')
             play_cold_warm()
-            break
-
-        if answer == 'no':
-            print('BOSS: I thought so!')
-            time.sleep(2)
-            display_screen('lose.txt')
             break
 
 
