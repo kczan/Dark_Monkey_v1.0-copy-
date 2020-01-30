@@ -99,6 +99,7 @@ def main():
     inventory_enabled = False
     intro()
     current_question = engine.questions_generator(0)
+    q_index = 0
     player = Player(ui.get_input('Choose a name for your character: '), FIRST_MAP_START_X, FIRST_MAP_START_Y, PLAYER_ICON, PLAYER_HP)
     is_running = True
     board = data_manager.create_map_from_file('map_one')
@@ -122,7 +123,7 @@ def main():
                 inventory_enabled = False
         if key in ['w', 'a', 's', 'd']:
             player.message = ''
-            board, current_question  = engine.put_player_on_board(board, player, key, player.current_map, current_question)
+            board, current_question, q_index  = engine.put_player_on_board(board, player, key, player.current_map, current_question, q_index)
             ui.display_board(board)
             print(player)
             player.show_message()

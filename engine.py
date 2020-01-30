@@ -34,7 +34,7 @@ def wipe_element(board, pos_x, pos_y, player):
     board[pos_y][pos_x] = '.'
 
 
-def put_player_on_board(board, player, key, current_map, current_question):
+def put_player_on_board(board, player, key, current_map, current_question, q_index):
     '''
     Function too big, let's try to divide it into smaller ones if we can.
     '''
@@ -83,14 +83,17 @@ def put_player_on_board(board, player, key, current_map, current_question):
         if question_mark(player, current_question[0], current_question[1]):
             board[player.pos_y][player.pos_x] = player.icon
             board[y_before_movement][x_before_movement] = '.'
-            q_index = 0
             current_question = questions_generator(q_index+1)
         else:
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
+    elif board[player.pos_y][player.pos_x] == '\033[95m*\033[0m':
+        player.message = current_question[2]
+        player.show_message()
     else:
         board = keep_player_still(player, x_before_movement, y_before_movement, board)
-        
-    return board, current_question
+
+
+    return board, current_question, q_index
 
 
 def check_field(symbol, player, current_map):
@@ -143,9 +146,14 @@ def question_mark(player, question, answer):
         player.add_money(REWARD)
         return True
     else:
-        player.message = "Wrong! You lost 50 gold"
-        player.show_message()
-        player.add_money(LOST)
+        if player.money + LOST < 0:
+            player.money = 0
+            player.message = "Wrong!"
+            player.show_message()
+        else:    
+            player.add_money(LOST)
+            player.message = "Wrong! You lost 50 gold"
+            player.show_message()
         return False
 
 
@@ -182,5 +190,6 @@ def questions_generator(index):
     questions_list = data_manager.get_questions("questions.txt")
     que_index = 0
     ans_index = 1
-    qa_list = [questions_list[index][que_index], questions_list[index][ans_index]]
+    hint_index = 2
+    qa_list = [questions_list[index][que_index], questions_list[index][ans_index], questions_list[index][hint_index]]
     return qa_list
