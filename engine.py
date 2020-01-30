@@ -1,8 +1,9 @@
 import data_manager
 import boss
+import sys
+
 
 def create_board(width, height):
-
     map_list = []
     map_row = []
     for _ in range(width):
@@ -27,11 +28,6 @@ def keep_player_still(player, x_before_movement, y_before_movement, board):
     player.pos_y = y_before_movement
     board[player.pos_y][player.pos_x] = player.icon
     return board
-
-
-def wipe_element(board, pos_x, pos_y, player):
-    board[player.pos_y][player.pos_x] = player.icon
-    board[pos_y][pos_x] = '.'
 
 
 def put_player_on_board(board, player, key, current_map, current_question, q_index):
@@ -126,6 +122,7 @@ def check_field(symbol, player, current_map):
         player.change_hp(TRAP)
     elif symbol == ':':
         boss.start_fight(player)
+        sys.exit()
     return False
 
 
@@ -158,6 +155,7 @@ def question_mark(player, question, answer):
 
 
 def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
+    player.monsters_slain += 1
     if symbol == 'K':  # skeleton, weak to wand spells
         if player.wand == 1:
             board[player.pos_y][player.pos_x] = player.icon
@@ -182,7 +180,7 @@ def fight_monster(symbol, board, player, x_before_movement, y_before_movement):
             board = keep_player_still(player, x_before_movement, y_before_movement, board)
             player.message = 'That troll seems to be immune to my spells... Maybe a regular weapon will help?'
             player.show_message()
-            player.change_hp(-15)
+            player.change_hp(-20)
     if symbol == 'M':  # Mage, you have to be really skilled at spells to defeat him
         if player.spell == 3:
             board[player.pos_y][player.pos_x] = player.icon

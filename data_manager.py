@@ -36,7 +36,7 @@ def create_map_from_file(filename):
 
 def append_to_file(filename, table):
     from csv import writer
-    with open(filename, "a+", newline='') as file:
+    with open(filename, "a+", newline='\n') as file:
         csv_writer = writer(file)
         csv_writer.writerow(table)
 

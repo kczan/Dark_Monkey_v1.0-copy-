@@ -2,7 +2,7 @@ from helpers import *
 import engine
 import ui
 import data_manager
-import sys
+import boss
 
 
 PLAYER_ICON = '\033[96m@\033[0m'
@@ -12,31 +12,6 @@ PLAYER_HP = 100
 
 BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
-
-
-def intro():
-    import time
-    import sys
-    clear_screen()
-    board = data_manager.create_map_from_file('screen_title.txt')
-    ui.display_intro_screen(board)
-    time.sleep(3)
-    clear_screen()
-    board = data_manager.create_map_from_file('screen_monkey.txt')
-    ui.display_intro_screen(board)
-    while True:
-        key = key_pressed()
-        if key == 'q':
-            sys.exit(0)
-        elif key == 'h':
-            clear_screen()
-            highscore_table = sorted(data_manager.get_data_from_file("highscore.csv"), reverse=True)
-            ui.print_table(highscore_table)
-            if key_pressed() == 'h':
-                ui.display_intro_screen(board)
-        elif key == ' ':
-            clear_screen()
-            break
 
 
 class Player:
@@ -57,6 +32,7 @@ class Player:
         self.key = 0
         self.message = ''
         self.hint = ''
+        self.monsters_slain = 0
 
     def change_position(self, x_change, y_change):
         self.pos_x += x_change
@@ -91,10 +67,10 @@ class Player:
         self.key = 1
 
     def __str__(self):
-        return 'Name: {}, Gold: {}, HP: {}, Items: {}'.format(self.name, self.money, self.hp, self.items)
+        return f'Name: {self.name}, Gold: {self.money}'
 
     def result(self):
-        result = [str(self.money), self.name]
+        result = [str(self.money), self.name, self.monsters_slain]
         return result
 
     def show_message(self):
@@ -111,6 +87,37 @@ class Player:
             self.message = "You don't have any potion to use!"
             self.show_message()
 
+    def display_hp(self):
+        all_bars = 10
+        full_bars = int(self.hp/10)
+        empty_bars = all_bars - full_bars
+        print('HP: ' + full_bars * '■ ' + empty_bars * '□ ')
+
+
+def intro():
+    import time
+    import sys
+    clear_screen()
+    board = data_manager.create_map_from_file('screen_title.txt')
+    ui.display_intro_screen(board)
+    time.sleep(3)
+    clear_screen()
+    board = data_manager.create_map_from_file('screen_monkey.txt')
+    ui.display_intro_screen(board)
+    while True:
+        key = key_pressed()
+        if key == 'q':
+            sys.exit(0)
+        elif key == 'h':
+            clear_screen()
+            highscore_table = sorted(data_manager.get_data_from_file("highscore.csv"), reverse=True)
+            ui.print_table(highscore_table)
+            if key_pressed() == 'h':
+                ui.display_intro_screen(board)
+        elif key == ' ':
+            clear_screen()
+            break
+
 
 def main():
     inventory_enabled = False
@@ -124,6 +131,7 @@ def main():
     board[FIRST_MAP_START_Y][FIRST_MAP_START_X] = player.icon
     ui.display_board(board)
     print(player)
+    player.display_hp()
     '''engine.save_highscore(player)'''
     while is_running:
         key = key_pressed()
@@ -133,6 +141,7 @@ def main():
             clear_screen()
         if key == 'i':
             if not inventory_enabled:
+                player.display_hp()
                 ui.show_inventory(player, board)
                 inventory_enabled = True
                 hint_enabled = False
@@ -144,6 +153,7 @@ def main():
             if not hint_enabled:
                 ui.display_board(board)
                 print(player)
+                player.display_hp()
                 player.show_hint()
                 hint_enabled = True
                 inventory_enabled = False
@@ -155,6 +165,7 @@ def main():
             player.use_potion()
             ui.display_board(board)
             print(player)
+            player.display_hp()
             if inventory_enabled:
                 ui.show_inventory(player, board)
         if key in ['w', 'a', 's', 'd']:
@@ -162,9 +173,13 @@ def main():
             board, current_question, q_index = engine.put_player_on_board(board, player, key, player.current_map, current_question, q_index)
             ui.display_board(board)
             print(player)
+            player.display_hp()
             player.show_message()
             if inventory_enabled:
                 ui.show_inventory(player, board)
+        if player.hp <= 0:
+            is_running = False
+            boss.display_screen('lose.txt')
 
 
 if __name__ == '__main__':

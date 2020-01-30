@@ -3,6 +3,7 @@ import time
 import sys
 import helpers
 import ui
+import data_manager
 
 
 def display_boss(): 
@@ -11,7 +12,7 @@ def display_boss():
     print('\033[91m' + read_data + '\033[0m') 
 
 
-def play_cold_warm():
+def play_cold_warm(player):
     user_guesses = 10
     correct_answer = random.choice(range(21))
 
@@ -25,6 +26,7 @@ def play_cold_warm():
             print('You have defeated me... Pure luck!')
             time.sleep(3)
             display_screen('win.txt')
+            data_manager.append_to_file('highscore.csv', player.result())
             break
         user_guesses -= 1
         print('Guesses left:', user_guesses)
@@ -55,11 +57,6 @@ def compare_user_answer(guess, correct_answer):
 def start_fight(player):
     helpers.clear_screen()
     display_boss()
+    print('BOSS: lets play High/Low! You have 10 chances to guess my number from 0 to 20. ')
+    play_cold_warm(player)
 
-    while True:
-        helpers.clear_screen()
-        display_boss()
-        print('BOSS: lets play High/Low! You have 10 chances to guess my number from 0 to 20. ')
-        play_cold_warm()
-        print(player)
-        break
